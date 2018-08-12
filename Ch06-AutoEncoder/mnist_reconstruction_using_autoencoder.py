@@ -66,7 +66,7 @@ with tf.Session() as sess:
       _, current_loss = sess.run([train_step, loss], feed_dict={x: batch_xs})
     # 지정된 epoch마다 학습결과를 출력합니다.
     if epoch % display_step == 0:
-        print("반복(Epoch): %d, 손실 함수(Loss): %f" % ((epoch+1), current_loss))
+      print("반복(Epoch): %d, 손실 함수(Loss): %f" % ((epoch+1), current_loss))
 
   # 테스트 데이터로 Reconstruction을 수행합니다.
   reconstructed_result = sess.run(y_pred, feed_dict={x: mnist.test.images[:examples_to_show]})
