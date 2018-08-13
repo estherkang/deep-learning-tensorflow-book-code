@@ -12,7 +12,7 @@ import tensorflow as tf
 import numpy as np
 
 # CIFAR-10 데이터를 다운로드 받기 위한 keras의 helper 함수인 load_data 함수를 임포트합니다.
-from tensorflow.python.keras._impl.keras.datasets.cifar10 import load_data
+from tensorflow.keras.datasets.cifar10 import load_data
 
 # 다음 배치를 읽어오기 위한 next_batch 유틸리티 함수를 정의합니다.
 def next_batch(num, data, labels):
@@ -40,7 +40,7 @@ def build_CNN_classifier(x):
   # 첫번째 Pooling layer
   h_pool1 = tf.nn.max_pool(h_conv1, ksize=[1, 3, 3, 1], strides=[1, 2, 2, 1], padding='SAME')
 
-  # 두번째 convolutional layer -- 32개의 특징들(feature)을 64개의 특징들(feature)로 맵핑(maping)합니다.
+  # 두번째 convolutional layer - 32개의 특징들(feature)을 64개의 특징들(feature)로 맵핑(maping)합니다.
   W_conv2 = tf.Variable(tf.truncated_normal(shape=[5, 5, 64, 64], stddev=5e-2))
   b_conv2 = tf.Variable(tf.constant(0.1, shape=[64]))
   h_conv2 = tf.nn.relu(tf.nn.conv2d(h_pool1, W_conv2, strides=[1, 1, 1, 1], padding='SAME') + b_conv2)
@@ -63,7 +63,7 @@ def build_CNN_classifier(x):
   b_conv5 = tf.Variable(tf.constant(0.1, shape=[128]))
   h_conv5 = tf.nn.relu(tf.nn.conv2d(h_conv4, W_conv5, strides=[1, 1, 1, 1], padding='SAME') + b_conv5)
 
-  # Fully Connected Layer 1 -- 2번의 downsampling 이후에, 우리의 32x32 이미지는 8x8x128 특징맵(feature map)이 됩니다.
+  # Fully Connected Layer 1 - 2번의 downsampling 이후에, 우리의 32x32 이미지는 8x8x128 특징맵(feature map)이 됩니다.
   # 이를 384개의 특징들로 맵핑(maping)합니다.
   W_fc1 = tf.Variable(tf.truncated_normal(shape=[8 * 8 * 128, 384], stddev=5e-2))
   b_fc1 = tf.Variable(tf.constant(0.1, shape=[384]))
@@ -74,7 +74,7 @@ def build_CNN_classifier(x):
   # Dropout - 모델의 복잡도를 컨트롤합니다. 특징들의 co-adaptation을 방지합니다.
   h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob) 
 
-  # 384개의 특징들(feature)을 10개의 클래스-airplane, automobile, bird...-로 맵핑(maping)합니다.
+  # Fully Connected Layer 2 - 384개의 특징들(feature)을 10개의 클래스-airplane, automobile, bird...-로 맵핑(maping)합니다.
   W_fc2 = tf.Variable(tf.truncated_normal(shape=[384, 10], stddev=5e-2))
   b_fc2 = tf.Variable(tf.constant(0.1, shape=[10]))
   logits = tf.matmul(h_fc1_drop,W_fc2) + b_fc2
