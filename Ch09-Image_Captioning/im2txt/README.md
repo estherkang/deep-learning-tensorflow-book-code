@@ -24,7 +24,7 @@ Show and Tell Model Architecture는 아래와 같습니다.
 코드를 실행하기 위해서는 아래 과정을 단계별로 수행해야 합니다.
 
 ### 트레이닝 데이터 준비하기
-MS COCO 트레이닝 데이터를 준비하기 위해 다음의 과정을 수행합니다. 아래 과정은 shell script를 이용하여 MS COCO데이터셋을 다운받고 TFRecord 포맷으로 변환합니다.
+MS COCO 트레이닝 데이터를 준비하기 위해 다음의 과정을 수행합니다. 아래 과정은 shell script를 이용하여 MS COCO 데이터셋을 다운받고 TFRecord 포맷으로 변환합니다.
 ```shell
 # 아래 명령어로 ${HOME} 경로를 확인합니다. e.g. /home/solaris
 cat ${HOME}
@@ -111,9 +111,11 @@ python run_inference.py \
 학습이 잘 진행된 경우 아래와 같이 그럴듯한 캡션을 생성해내는 모습을 볼 수 있습니다.
 
 인풋 이미지:
+
 ![Surfer](g3doc/COCO_val2014_000000224477.jpg)
 
 출력 결과:
+
 ```shell
 Captions for image COCO_val2014_000000224477.jpg:
   0) a man riding a wave on top of a surfboard . (p=0.040413)
