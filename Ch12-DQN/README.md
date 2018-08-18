@@ -22,4 +22,5 @@ jupyter notebook
 
 ## References
 [https://gist.github.com/EderSantana/c7222daa328f0e885093](https://gist.github.com/EderSantana/c7222daa328f0e885093)
+
 [https://github.com/SeanNaren/TorchQLearningExample](https://github.com/SeanNaren/TorchQLearningExample)
