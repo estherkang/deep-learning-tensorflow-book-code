@@ -80,5 +80,5 @@ static inline bufferpoid(tp, char *timer, struct rq *rq)
 ```
 
 
-## Reference(Original Code)
+## Reference
 [https://github.com/sherjilozair/char-rnn-tensorflow](https://github.com/sherjilozair/char-rnn-tensorflow)
