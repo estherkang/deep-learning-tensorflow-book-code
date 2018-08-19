@@ -110,7 +110,7 @@ def create_image_lists(image_dir, testing_percentage, validation_percentage):
       # 이는 일종의 마법처럼 보일 수 있습니다. 하지만, 우리는 이 파일이 training sets로 갈지, testing sets로 갈지, validation sets로 갈지를 결정해야만 합니다.
       # 그리고 우리는 더많은 파일들이 추가되더라도, 같은 set에 이미 존재하는 파일들이 유지되길 원합니다.
       # 그렇게 하기 위해서, 우리는 파일 이름 그자체로부터 결정하는 안정적인 방법이 있어야만 합니다.
-      # 이를 위해 우리는 파일 이름을 hash하고, 이를 이를 할당하는데 사용하는 확률을 결정하는데 사용합니다.
+      # 이를 위해 우리는 파일 이름을 hash하고, 이를 할당하는데 사용하는 확률을 결정하는데 사용합니다.
       hash_name_hashed = hashlib.sha1(compat.as_bytes(hash_name)).hexdigest()
       percentage_hash = ((int(hash_name_hashed, 16) %
                           (MAX_NUM_IMAGES_PER_CLASS + 1)) *
@@ -160,7 +160,7 @@ def get_image_path(image_lists, label_name, index, image_dir, category):
 
 def get_bottleneck_path(image_lists, label_name, index, bottleneck_dir,
                         category):
-  """"주어진 index의 lable에 해당되는 bottleneck 파일의 경로(path)를 리턴합니다.
+  """"주어진 index의 label에 해당되는 bottleneck 파일의 경로(path)를 리턴합니다.
   인자들(Args):
     image_lists: 각각의 label에 해당되는 training 이미지들의 Dictionary
     label_name: 우리가 얻고자하는 이미지의 Label string
