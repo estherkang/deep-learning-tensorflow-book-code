@@ -14,9 +14,6 @@ from io import StringIO
 from matplotlib import pyplot as plt
 from PIL import Image
 
-if tf.__version__ < '1.4.0':
-  raise ImportError('Please upgrade your tensorflow installation to v1.4.* or later!')
-
 # 현재 디렉토리를 모듈 경로로 추가합니다.
 sys.path.append("..")
 
@@ -66,7 +63,7 @@ category_index = label_map_util.create_category_index(categories)
 def load_image_into_numpy_array(image):
   (im_width, im_height) = image.size
   return np.array(image.getdata()).reshape(
-      (im_height, im_width, 3)).astype(np.uint8)
+    (im_height, im_width, 3)).astype(np.uint8)
 
 
 # test_images 폴더에 있는 기본 테스트용 이미지 2개(image1.jpg, imge2.jpg)를 불러옵니다.
@@ -79,11 +76,11 @@ IMAGE_SIZE = (12, 8)
 # 불러온 테스트 이미지들을 하나씩 화면에 출력합니다.
 # 다음으로 넘어가기 위해서는 아무 버튼을 한번 입력해야합니다.(plt.waitforbuttonpress())
 for image_path in TEST_IMAGE_PATHS:
-    image = Image.open(image_path)    
-    plt.figure(figsize=IMAGE_SIZE)
-    plt.imshow(image)
-    plt.draw()
-    plt.waitforbuttonpress()
+  image = Image.open(image_path)    
+  plt.figure(figsize=IMAGE_SIZE)
+  plt.imshow(image)
+  plt.draw()
+  plt.waitforbuttonpress()
 
 # 불러온 이미지에 대해서 물체인식 추론(Inference)을 진행하고 추론 결과를 화면에 출력합니다.
 with detection_graph.as_default():
@@ -105,8 +102,8 @@ with detection_graph.as_default():
       image_np_expanded = np.expand_dims(image_np, axis=0)
       # 인풋 이미지를 플레이스 홀더에 넣고 추론을 지행합니다.
       (boxes, scores, classes, num) = sess.run(
-          [detection_boxes, detection_scores, detection_classes, num_detections],
-          feed_dict={image_tensor: image_np_expanded})
+        [detection_boxes, detection_scores, detection_classes, num_detections],
+        feed_dict={image_tensor: image_np_expanded})
       # 추론 결과를 화면에 출력합니다.
       # 출력결과 : 바운딩 박스 + 레이블 + 확신의 정도(score)
       vis_util.visualize_boxes_and_labels_on_image_array(
@@ -146,7 +143,7 @@ with detection_graph.as_default():
     image_np = load_image_into_numpy_array(image)
     # 모델의 인풋인 [1, None, None, 3] 형태로 차원을 확장(Expand)합니다. 
     image_np_expanded = np.expand_dims(image_np, axis=0)
-    # 인풋 이미지를 플레이스 홀더에 넣고 추론을 지행합니다.
+    # 인풋 이미지를 플레이스 홀더에 넣고 추론을 진행합니다.
     (boxes, scores, classes, num) = sess.run(
       [detection_boxes, detection_scores, detection_classes, num_detections],
       feed_dict={image_tensor: image_np_expanded})
