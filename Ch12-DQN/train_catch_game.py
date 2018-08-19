@@ -10,7 +10,7 @@ import os
 epsilon = 1                 		# epsilon-Greedy 기법에 사용할 최초의 epsilon값
 epsilonMinimumValue = 0.001 		# epsilon의 최소값 (이 값 이하로 Decay하지 않습니다)
 num_actions = 3               	# 에이전트가 취할 수 있는 행동의 개수 - (좌로 움직이기, 가만히 있기, 우로 움직이기)
-num_epochs = 1000 					    # 학습에 사용할 반복횟수
+num_epochs = 2000 					    # 학습에 사용할 반복횟수
 hidden_size = 128 					    # 히든레이어의 노드 개수
 maxMemory = 500 					      # Replay Memory의 크기
 batch_size = 50 					      # 학습에 사용할 배치 개수
@@ -24,7 +24,7 @@ def randf(s, e):
   return (float(random.randrange(0, (e - s) * 9999)) / 10000) + s;
 
 # DQN 모델을 정의합니다.
-# 100(현재 상태 - 10x10 Grid) -> 128 -> 128 -> 3(각 행동의 Q값)
+# 100(현재 상태 - 10x10 Grid) -> 128 -> 128 -> 3(예측된 각 행동의 Q값)
 def build_DQN(x):
   W1 = tf.Variable(tf.truncated_normal(shape=[state_size, hidden_size], stddev=1.0 / math.sqrt(float(state_size))))
   b1 = tf.Variable(tf.truncated_normal(shape=[hidden_size], stddev=0.01))  
@@ -46,12 +46,12 @@ y = tf.placeholder(tf.float32, shape=[None, num_actions])
 y_pred = build_DQN(x)
 
 # MSE 손실 함수와 옵티마이저를 정의합니다.
-cost = tf.reduce_sum(tf.square(y-y_pred)) / (2*batch_size)  # MSE 손실 함수
-optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)
+loss = tf.reduce_sum(tf.square(y-y_pred)) / (2*batch_size)  # MSE 손실 함수
+optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(loss)
 
 # CatchGame을 수행하는 Environment를 구현합니다.
 class CatchEnvironment():
-  # 상태를 초기화합니다.
+  # 상태의 초기값을 지정합니다.
   def __init__(self, gridSize):
     self.gridSize = gridSize
     self.state_size = self.gridSize * self.gridSize
@@ -111,7 +111,7 @@ class CatchEnvironment():
     else: 
       return False 
 
-  # action(좌로 한칸 이동, 제자리, 우로 한칸이동)에 따라 baket의 위치를 업데이트합니다.
+  # action(좌로 한칸 이동, 제자리, 우로 한칸이동)에 따라 basket의 위치를 업데이트합니다.
   def updateState(self, action):
     move = 0
     if (action == 0):
@@ -189,7 +189,7 @@ class ReplayMemory:
       else:
         target[self.actions[randomIndex]] = self.rewards[randomIndex] + self.discount * nextStateMaxQ
 
-      # 인풋과 타겟 데이터에 값을 넣습니다.
+      # 인풋과 타겟 데이터에 값을 지정합니다.
       inputs[i] = current_inputState
       targets[i] = target
 
@@ -225,7 +225,7 @@ def main(_):
             
       while (isGameOver != True):
         action = -9999  # Q값을 초기화합니다.
-        # epsilon-Greedy 기법에 따라 랜덤한 행동을 할지 최적의 해동을 할지를 결정합니다.
+        # epsilon-Greedy 기법에 따라 랜덤한 행동을 할지 최적의 행동을 할지를 결정합니다.
         global epsilon
         if (randf(0, 1) <= epsilon):
           # epsilon 확률만큼 랜덤한 행동을 합니다.
@@ -255,12 +255,12 @@ def main(_):
         currentState = nextState
         isGameOver = gameOver
                 
-        # Replay Memory로부터 학습에 사용할 데이터를 불러옵니다.
+        # Replay Memory로부터 학습에 사용할 Batch 데이터를 불러옵니다.
         inputs, targets = memory.getBatch(y_pred, batch_size, num_actions, state_size, sess, x)
         
         # 최적화를 수행하고 손실함수를 리턴받습니다.
-        _, loss = sess.run([optimizer, cost], feed_dict={x: inputs, y: targets})  
-        err = err + loss
+        _, loss_print = sess.run([optimizer, loss], feed_dict={x: inputs, y: targets})  
+        err = err + loss_print
 
       print("반복(Epoch): %d, 에러(err): %.4f, 승리횟수(Win count): %d, 승리비율(Win ratio): %.4f" % (i, err, winCount, float(winCount)/float(i+1)*100))
     # 학습이 모두 끝나면 파라미터를 지정된 경로에 저장합니다.
@@ -269,5 +269,5 @@ def main(_):
     print("%s 경로에 파라미터가 저장되었습니다" % save_path)
 
 if __name__ == '__main__':
-  # main함수를 호출합니다.
+  # main 함수를 호출합니다.
   tf.app.run()
