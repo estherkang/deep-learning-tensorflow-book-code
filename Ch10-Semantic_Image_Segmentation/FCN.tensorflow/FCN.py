@@ -158,7 +158,7 @@ def main(argv=None):
 
   # 손실함수를 선언하고 손실함수에 대한 summary를 지정합니다.
   loss = tf.reduce_mean((tf.nn.sparse_softmax_cross_entropy_with_logits(logits=logits,
-                                                                        labels=tf.squeeze(annotation, squeeze_dims=[3]),                                                                          name="entropy")))
+                                                                        labels=tf.squeeze(annotation, squeeze_dims=[3]), name="entropy")))
   tf.summary.scalar("entropy", loss)
 
   # 옵티마이저를 선언하고 파라미터를 한스텝 업데이트하는 train_step 연산을 정의합니다.
