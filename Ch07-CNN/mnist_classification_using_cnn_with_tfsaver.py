@@ -98,7 +98,7 @@ with tf.Session() as sess:
       saver.save(sess, checkpoint_path, global_step=step)
       train_accuracy = accuracy.eval(feed_dict={x: batch[0], y: batch[1]})
       print("반복(Epoch): %d, 트레이닝 데이터 정확도: %f" % (step, train_accuracy))
-    # 옵티마이저를 실행해 학습을 진행합니다.
+    # 옵티마이저를 실행해 파라미터를 한스텝 업데이트합니다.
     sess.run([train_step], feed_dict={x: batch[0], y: batch[1]})
 
   # 학습이 끝나면 테스트 데이터에 대한 정확도를 출력합니다.
